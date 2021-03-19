@@ -8,6 +8,7 @@ import {filter, switchMap, take} from "rxjs/operators";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {EditEmployeeComponent} from "../edit-employee/edit-employee.component";
 import {Observable, Subscription} from "rxjs";
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 @Component({
   selector: 'app-employee-view',
@@ -16,10 +17,11 @@ import {Observable, Subscription} from "rxjs";
 })
 export class EmployeeViewComponent implements OnInit {
   loaded = false;
-  employees$: Observable<Employee[]> = this.employeesQuery.selectAll();
+  employees$: Observable<Employee[]> = this.employeesQuery.selectFilteredEmployees$;
   columns = ['ID', 'first name', 'last name', 'age', "city", 'street', 'department', 'edit'];
   index = ['id', 'firstName', 'lastName', 'age', 'city', 'street', 'department'];
   listEmployeesSub: Subscription;
+  filters;
   // constructor() { }
 
   constructor(private dialog: MatDialog, private rs: RestService, private router: Router, private employeesQuery: employeeQuery, private employeeStore: EmployeeStore) {}
@@ -36,6 +38,10 @@ export class EmployeeViewComponent implements OnInit {
       })
     ).subscribe(result => {});
     this.employeesQuery.selectAreEmployeesLoaded$.subscribe(res => this.loaded = res)
+    this.employeesQuery.filtersChange$.subscribe(filters => {
+      this.filters = filters
+      console.log(filters);
+    })
   //   console.log('1')
   //   this.employeesQuery.getLoading().subscribe(res => this.loading = res)
   //   this.employeesQuery.getEmployees().subscribe(res => this.employees = res)

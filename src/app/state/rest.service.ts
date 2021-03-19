@@ -20,6 +20,7 @@ export class RestService {
   }
 
   getEmployees(): Observable<Employee[]>{
+    this.store.update({areEmployeesLoaded: false});
     return  this.http.get<Employee[]>(this.url).pipe(delay(2000),
       tap(employees => {
         this.store.loadEmployees(employees, true)
@@ -29,21 +30,25 @@ export class RestService {
   }
 
   updateEmployee(id: string, employee: any): Observable<Employee>{ //we paa new employee without id property
-    console.log(employee);
-    // let updatedEmployee={
-    //   firstName: employee.firstName,
-    //   lastName: employee.lastName,
-    //   age: employee.age,
-    //   city: employee.city,
-    //   street: employee.street,
-    //   department: employee.department
-    // };
-    // console.log(updatedEmployee);
+    this.store.update({areEmployeesLoaded: false});
     return this.http.put<Employee>(this.url+'/'+id, employee).pipe(delay(2000),
       tap(result => {
-        this.store.update(id, employee)
+        this.store.updateEmployee(id, employee, true)
       })
     )
+  }
+
+  updateFilter(city: string, department: string, firstName: string, lastName: string ) {
+    this.store.update({
+      ui: {
+        filters:{
+          city: city,
+          department: department,
+          firstName: firstName,
+          lastName: lastName
+        }
+      }
+    });
   }
 
 }

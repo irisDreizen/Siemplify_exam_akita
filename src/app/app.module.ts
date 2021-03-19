@@ -15,13 +15,15 @@ import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from "@angular/material/dia
 import {MatFormFieldControl, MatFormFieldModule} from "@angular/material/form-field";
 import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
+import { FiltersComponent } from './filters/filters.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     EmployeeViewComponent,
-    EditEmployeeComponent
+    EditEmployeeComponent,
+    FiltersComponent
   ],
   imports: [
     BrowserModule,

@@ -4,15 +4,29 @@ import {Injectable} from "@angular/core";
 
 //represent our data will look like in the state
 export interface EmployeeState extends EntityState<Employee>{
-  // employees: Employee[];
   areEmployeesLoaded: boolean; //are the employees loaded
+  ui: {
+    filters: {
+      department: string;
+      city: string
+      firstName: string,
+      lastName: string
+    }
+  }
 }
 
 //initial state when the data loaded
 export  const  getInitialState= () => {
   return {
-    // employees: [],
     areEmployeesLoaded: false, //heck whether the employee entities have already been saved in the state
+    ui: {
+      filters: {
+        department: '',
+        city: '',
+        firstName: '',
+        lastName: ''
+      }
+    }
   }
 };
 
@@ -35,6 +49,10 @@ export class EmployeeStore  extends EntityStore<EmployeeState>{
       ...state,
       areEmployeesLoaded
     }));
+  }
+
+  updateEmployee(id: string, employee: Employee, areEmployeesLoaded){
+    this.update(id, employee);
   }
 
 

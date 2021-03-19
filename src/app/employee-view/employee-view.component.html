@@ -1,12 +1,18 @@
 <div class="container">
+  <app-filters></app-filters>
   <mat-spinner *ngIf="!loaded"></mat-spinner>
   <table class="table" *ngIf="loaded">
     <tr>
       <th *ngFor="let col of columns">{{col}}</th>
     </tr>
-    <tr *ngFor="let employee of employees$|async">
+    <tr *ngFor="let employee of employees$ |async">
       <td *ngFor="let col of index">
-        {{employee[col]}}
+        <div *ngIf="col!='department'; else upperCase">
+          {{employee[col]}}
+        </div>
+        <ng-template #upperCase>
+          {{employee[col]|uppercase}}
+        </ng-template>
       </td>
       <td><button (click)="editEmployee(employee)">edit</button></td>
     </tr>
