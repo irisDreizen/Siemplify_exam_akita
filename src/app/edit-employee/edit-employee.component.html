@@ -1,0 +1,47 @@
+<div>
+
+  <mat-dialog-content [formGroup]="form" >
+    <h2 mat-dialog-title> Edit Employee - {{data.firstName}} {{data.lastName}}</h2>
+    <mat-form-field>
+      <label>ID</label>
+      <input matInput type="text" class="form-control" id="id"  name="id" formControlName="id">
+      </mat-form-field>
+    <br>
+    <mat-form-field>
+      <label>First Name</label>
+      <input matInput type="text" class="form-control" id="firstName"  name="firstName" formControlName="firstName">
+      </mat-form-field>
+    <br>
+    <mat-form-field>
+      <label>Last Name</label>
+      <input matInput type="text" class="form-control" id="lastName"  name="lastName" formControlName="lastName">
+      </mat-form-field>
+
+    <br>
+     <mat-form-field>
+      <label>Age</label>
+      <input matInput type="text" class="form-control" id="age"  name="age" formControlName="age">
+      </mat-form-field>
+    <br>
+     <mat-form-field>
+      <label>City</label>
+      <input matInput type="text" class="form-control" id="city" name="city" formControlName="city">
+      </mat-form-field>
+    <br>
+    <mat-form-field>
+      <label>Street</label>
+      <input matInput type="text" class="form-control" id="street"  name="street" formControlName="street">
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+      <label>Department</label>
+      <input matInput type="text" class="form-control" id="departmet" name="department" formControlName="department">
+      </mat-form-field>
+    <br>
+  </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-button mat-dialog-close (click)="onClose()" class="btn btn-success">Close</button>
+      <button mat-raised-button (click)="onSubmit()" class="btn btn-success">Submit</button>
+      </mat-dialog-actions>
+
+</div>

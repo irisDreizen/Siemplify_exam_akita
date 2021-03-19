@@ -1,0 +1,40 @@
+{
+  "Employees": [
+    {
+      "id": "1",
+      "firstName": "Gal",
+      "lastName": "Tadir",
+      "age": "26",
+      "city": "Beer Sheva",
+      "street": "Kadesh",
+      "department": "Sales"
+    },
+    {
+      "firstName": "Chen",
+      "lastName": "Avraham",
+      "age": "26",
+      "city": "Beer Sheva",
+      "street": "Kadesh",
+      "department": "R&D",
+      "id": "2"
+    },
+    {
+      "id": "3",
+      "firstName": "Ben",
+      "lastName": "Levin",
+      "age": "26",
+      "city": "Beer Sheva",
+      "street": "Kadesh",
+      "department": "R&D"
+    },
+    {
+      "id": "4",
+      "firstName": "shalom",
+      "lastName": "Avraham",
+      "age": "26",
+      "city": "Beer Sheva",
+      "street": "Kadesh",
+      "department": "R&D"
+    }
+  ]
+}
