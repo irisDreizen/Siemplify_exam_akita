@@ -5,7 +5,7 @@
     <tr>
       <th *ngFor="let col of columns">{{col}}</th>
     </tr>
-    <tr *ngFor="let employee of employees$ |async">
+    <tr *ngFor="let employee of employees$ | async">
       <td *ngFor="let col of index">
         <div *ngIf="col!='department'; else upperCase">
           {{employee[col]}}
