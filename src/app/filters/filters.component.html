@@ -1,0 +1,35 @@
+<form [formGroup]="filters">
+
+  <button style="margin-bottom: 15px;" (click)="reset()">Reset</button>
+  <!-- {{filters.value | json}} -->
+
+  <br>
+  First Name:
+  <input type="text" formControlName="firstName">
+  Last Name:
+  <input type="text" formControlName="lastName">
+  <br>
+  Department:
+  <select
+    name="departmentSelect"
+    id="departmentSelect"
+    formControlName="department">
+    <option value="" selected> All </option>
+    <option
+      *ngFor="let depar of departmentNames$ | async"
+      value="{{depar}}">{{depar}}</option>
+  </select>
+  <br>
+  City:
+  <select
+    name="citySelect"
+    id="citySelect"
+    formControlName="city">
+    <option value="" selected> All </option>
+    <option
+      *ngFor="let city of citiesNames$ | async"
+      value="{{city}}">{{city}}</option>
+  </select>
+
+
+</form>
