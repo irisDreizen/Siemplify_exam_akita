@@ -37,20 +37,20 @@ export class employeeQuery extends QueryEntity<EmployeeState>{
       return fourthFilter;
     }
 
-  updatedCities$ = this.selectFilteredEmployees$.pipe(map(res => {
+  updatedCities$ = this.selectAll().pipe(map(res => {
       const cities = res.map(r => r.city); // 1
       const distinctCities = [...new Set(cities)]; // 2
       return distinctCities
     }));
 
-  updatedDepartments$ = this.selectFilteredEmployees$.pipe(map(res => {
+  updatedDepartments$ = this.selectAll().pipe(map(res => {
       const departments = res.map(r => r.department); // 1
       const distinctDepartments = [...new Set(departments)]; // 2
       return distinctDepartments
   }));
 
-  updatedIIDs$ = this.selectFilteredEmployees$.pipe(
-    map(employees => employees.map(e => e.id)),
+  updatedIIDs$ = this.selectAll().pipe(
+    map(employees => employees.map(e => e.userID)),
   );
 
   // getLoaded(): Observable<boolean>{

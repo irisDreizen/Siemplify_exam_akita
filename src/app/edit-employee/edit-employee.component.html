@@ -3,10 +3,10 @@
     <h2 mat-dialog-title> Edit Employee - {{data.firstName}} {{data.lastName}}</h2>
     <mat-form-field>
       <label>ID</label>
-      <input matInput type="text" class="form-control" id="id"  name="id" formControlName="id">
+      <input matInput type="text" class="form-control" id="id"  name="id" formControlName="userID">
       </mat-form-field>
     <br>
-    <span class="help-block" *ngIf="!form.controls['id'].valid && form.controls['id'].touched">
+    <span class="help-block" *ngIf="!form.controls['userID'].valid && form.controls['userID'].touched">
       {{chooseErrorForID()}}</span>
     <br>
     <mat-form-field>

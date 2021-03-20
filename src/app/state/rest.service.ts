@@ -42,6 +42,9 @@ export class RestService {
   }
 
   updateFilter(city: string, department: string, firstName: string, lastName: string ) {
+    console.log("updating filter in store");
+    console.log(city, department, firstName, lastName)
+    console.log("lalala")
     this.store.update({
       ui: {
         filters:{

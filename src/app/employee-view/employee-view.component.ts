@@ -21,7 +21,7 @@ export class EmployeeViewComponent implements OnInit {
   loading = this.employeesQuery.selectAreEmployeesLoading$;
   employees$: Observable<Employee[]> = this.employeesQuery.selectFilteredEmployees$;
   columns = ['ID', 'first name', 'last name', 'age', "city", 'street', 'department', 'edit'];
-  index = ['id', 'firstName', 'lastName', 'age', 'city', 'street', 'department'];
+  index = ['userID', 'firstName', 'lastName', 'age', 'city', 'street', 'department'];
   listEmployeesSub: Subscription;
   filters;
   // constructor() { }

@@ -19,7 +19,8 @@ export class EditEmployeeComponent implements OnInit {
 
   ngOnInit(): void {
     this.employeesQuery.updatedIIDs$.subscribe(res => {this.IDs = res})
-    this.form = new FormGroup({ 'id': new FormControl(this.data.id,[Validators.required, this.isValidID.bind(this) ]),
+    this.form = new FormGroup({
+      'userID': new FormControl(this.data.userID,[Validators.required, this.isValidID.bind(this) ]),
       'firstName': new FormControl(this.data.firstName, [Validators.required]),
       'lastName': new FormControl(this.data.lastName, Validators.required),
       'age': new FormControl(this.data.age, Validators.required),
@@ -35,7 +36,7 @@ export class EditEmployeeComponent implements OnInit {
 
   onSubmit(){
     //actions
-    this.rs.updateEmployee(this.form.value.id, this.form.value).subscribe(result => console.log(result))
+    this.rs.updateEmployee(this.data.id, this.form.value).subscribe(result => console.log(result))
     this.onClose()
   }
 
@@ -44,10 +45,7 @@ export class EditEmployeeComponent implements OnInit {
   }
 
   isValidID(control: FormControl): { [s: string]: boolean } {
-    console.log(control.value);
-    console.log(this.data.id)
-    console.log(this.IDs)
-    if (this.IDs.indexOf(control.value) !== -1 && this.data.id === control.value) { // if the ID not exist in ID's list
+    if (this.IDs.indexOf(control.value) !== -1 && this.data.userID=== control.value) { // if the ID not exist in ID's list
       console.log("i'm the same id")
       return null;
     }
@@ -61,10 +59,10 @@ export class EditEmployeeComponent implements OnInit {
   }
 
   chooseErrorForID() {
-    if (this.form.controls['id'].hasError('idIsUsed')){
+    if (this.form.controls['userID'].hasError('idIsUsed')){
       return 'This ID is already in use';
     }
-    if (this.form.controls['id'].hasError('required')){
+    if (this.form.controls['userID'].hasError('required')){
       return 'This filed is required';
     } else{
       return ''
