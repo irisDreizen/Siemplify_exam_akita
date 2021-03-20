@@ -1,15 +1,14 @@
-<div class="container">
-  <app-filters></app-filters>
-  <mat-spinner class="customers" *ngIf="loading | async; else notLoading"></mat-spinner>
+<app-filters></app-filters>
+  <mat-spinner class="employeesInfo" *ngIf="loading | async; else notLoading"></mat-spinner>
   <ng-template #notLoading>
-  <table class="customers">
+  <table class="employeesInfo">
     <tr>
       <th *ngFor="let col of columns">{{col}}</th>
     </tr>
     <tr *ngFor="let employee of employees$ | async">
       <td *ngFor="let col of index">
         <div *ngIf="col!='department'; else upperCase">
-          <span [class.hightlight]="shouldHighlight(employee,col)">{{employee[col]}}</span>
+          <span [class.employeesInfo__hightlight]="shouldHighlight(employee,col)">{{employee[col]}}</span>
         </div>
         <ng-template #upperCase>
           <span  [class.hightlight]="shouldHighlight(employee,col)">{{employee[col]|uppercase}}</span>
@@ -20,5 +19,5 @@
   </table>
   </ng-template>
   <br>
-</div>
+
 
