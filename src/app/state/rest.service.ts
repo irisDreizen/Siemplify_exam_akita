@@ -20,17 +20,20 @@ export class RestService {
   }
 
   getEmployees(): Observable<Employee[]>{
-    this.store.update({areEmployeesLoaded: false});
+    this.store.setLoading(true)
+    // this.store.update({areEmployeesLoaded: false});
     return  this.http.get<Employee[]>(this.url).pipe(delay(2000),
       tap(employees => {
         this.store.loadEmployees(employees, true)
+        // this.store.setLoading(false)
       })
     );
 
   }
 
   updateEmployee(id: string, employee: any): Observable<Employee>{ //we paa new employee without id property
-    this.store.update({areEmployeesLoaded: false});
+    this.store.setLoading(true)
+    // this.store.update({areEmployeesLoaded: false});
     return this.http.put<Employee>(this.url+'/'+id, employee).pipe(delay(2000),
       tap(result => {
         this.store.updateEmployee(id, employee, true)

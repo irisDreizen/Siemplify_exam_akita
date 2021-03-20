@@ -1,7 +1,8 @@
 <div class="container">
   <app-filters></app-filters>
-  <mat-spinner *ngIf="!loaded"></mat-spinner>
-  <table class="table" *ngIf="loaded">
+  <mat-spinner *ngIf="loading | async; else notLoading"></mat-spinner>
+  <ng-template #notLoading>
+  <table class="table">
     <tr>
       <th *ngFor="let col of columns">{{col}}</th>
     </tr>
@@ -17,6 +18,6 @@
       <td><button (click)="editEmployee(employee)">edit</button></td>
     </tr>
   </table>
-
+  </ng-template>
 </div>
 

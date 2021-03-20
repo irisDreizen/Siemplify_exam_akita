@@ -49,10 +49,12 @@ export class EmployeeStore  extends EntityStore<EmployeeState>{
       ...state,
       areEmployeesLoaded
     }));
+    this.setLoading(false);
   }
 
   updateEmployee(id: string, employee: Employee, areEmployeesLoaded){
     this.update(id, employee);
+    this.setLoading(false);
   }
 
 

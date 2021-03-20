@@ -1,29 +1,35 @@
-import {Component, OnInit, Inject, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
-import {MAT_DIALOG_DATA} from "@angular/material/dialog";
-import {Employee} from "../employee.model";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {RestService} from "../state/rest.service";
+import {employeeQuery} from "../state/employee.query";
 
 @Component({
   selector: 'app-edit-employee',
   templateUrl: './edit-employee.component.html',
-  styleUrls: ['./edit-employee.component.css']
+  styleUrls: ['./edit-employee.component.css'],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditEmployeeComponent implements OnInit {
   form: FormGroup;
+  IDs:string[];
 
-
-  constructor(private rs: RestService, public dialogRef: MatDialogRef<EditEmployeeComponent>,@Inject(MAT_DIALOG_DATA) public data: any) { }
+  constructor(private rs: RestService, public dialogRef: MatDialogRef<EditEmployeeComponent>,@Inject(MAT_DIALOG_DATA) public data: any, private employeesQuery: employeeQuery) { }
 
   ngOnInit(): void {
-    this.form = new FormGroup({ 'id': new FormControl(this.data.id),
-      'firstName': new FormControl(this.data.firstName),
-      'lastName': new FormControl(this.data.lastName),
-      'age': new FormControl(this.data.age),
-      'city': new FormControl(this.data.city),
-      'street': new FormControl( this.data.street) ,
-      'department': new FormControl(this.data.department) });
+    this.employeesQuery.updatedIIDs$.subscribe(res => {this.IDs = res})
+    this.form = new FormGroup({ 'id': new FormControl(this.data.id,[Validators.required, this.isValidID.bind(this) ]),
+      'firstName': new FormControl(this.data.firstName, [Validators.required]),
+      'lastName': new FormControl(this.data.lastName, Validators.required),
+      'age': new FormControl(this.data.age, Validators.required),
+      'city': new FormControl(this.data.city, Validators.required),
+      'street': new FormControl( this.data.street, Validators.required) ,
+      'department': new FormControl(this.data.department, Validators.required) });
+
+
+
+
 
   }
 
@@ -37,4 +43,31 @@ export class EditEmployeeComponent implements OnInit {
     this.dialogRef.close()
   }
 
+  isValidID(control: FormControl): { [s: string]: boolean } {
+    console.log(control.value);
+    console.log(this.data.id)
+    console.log(this.IDs)
+    if (this.IDs.indexOf(control.value) !== -1 && this.data.id === control.value) { // if the ID not exist in ID's list
+      console.log("i'm the same id")
+      return null;
+    }
+    if(this.IDs.indexOf(control.value) === -1){
+      console.log("i'm am a new id")
+      return null;
+    } else {
+      console.log('i return a validation error')
+      return {'idIsUsed': true};
+    }
+  }
+
+  chooseErrorForID() {
+    if (this.form.controls['id'].hasError('idIsUsed')){
+      return 'This ID is already in use';
+    }
+    if (this.form.controls['id'].hasError('required')){
+      return 'This filed is required';
+    } else{
+      return ''
+    }
+  }
 }

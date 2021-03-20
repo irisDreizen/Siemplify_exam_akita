@@ -17,9 +17,10 @@ export class employeeQuery extends QueryEntity<EmployeeState>{
   //   return this.select(state => state.employees)
   // }
   filtersChange$ = this.select(state => state.ui.filters);
-  selectAreEmployeesLoaded$ = this.select(state => {
-    return state.areEmployeesLoaded;
-  });
+  // selectAreEmployeesLoaded$ = this.select(state => {
+  //   return state.areEmployeesLoaded;
+  // });
+  selectAreEmployeesLoading$ = this.selectLoading()
 
   selectFilteredEmployees$ = combineLatest(
     this.filtersChange$,

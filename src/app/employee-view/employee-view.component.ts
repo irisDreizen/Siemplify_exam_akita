@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {RestService} from "../state/rest.service";
 import {Employee} from "../employee.model";
 import {Router} from "@angular/router";
@@ -13,10 +13,12 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 @Component({
   selector: 'app-employee-view',
   templateUrl: './employee-view.component.html',
-  styleUrls: ['./employee-view.component.css']
+  styleUrls: ['./employee-view.component.css'],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EmployeeViewComponent implements OnInit {
-  loaded = false;
+  loading = this.employeesQuery.selectAreEmployeesLoading$;
   employees$: Observable<Employee[]> = this.employeesQuery.selectFilteredEmployees$;
   columns = ['ID', 'first name', 'last name', 'age', "city", 'street', 'department', 'edit'];
   index = ['id', 'firstName', 'lastName', 'age', 'city', 'street', 'department'];
@@ -29,15 +31,15 @@ export class EmployeeViewComponent implements OnInit {
 
 
   ngOnInit() {
-    this.listEmployeesSub = this.employeesQuery.selectAreEmployeesLoaded$.pipe(
-      filter(areEmployeesLoaded => !areEmployeesLoaded),
-      switchMap(areEmployeesLoaded  => {
-        if (!areEmployeesLoaded ) {
+    this.listEmployeesSub = this.employeesQuery.selectAreEmployeesLoading$.pipe(
+      filter(areEmployeesLoading => areEmployeesLoading),
+      switchMap(areEmployeesLoading  => {
+        if (areEmployeesLoading ) {
           return this.rs.getEmployees();
         }
       })
     ).subscribe(result => {});
-    this.employeesQuery.selectAreEmployeesLoaded$.subscribe(res => this.loaded = res)
+    // this.employeesQuery.selectAreEmployeesLoading$.subscribe(res => this.loading = res)
     this.employeesQuery.filtersChange$.subscribe(filters => {
       this.filters = filters
       console.log(filters);
