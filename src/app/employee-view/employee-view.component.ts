@@ -42,7 +42,7 @@ export class EmployeeViewComponent implements OnInit {
     // this.employeesQuery.selectAreEmployeesLoading$.subscribe(res => this.loading = res)
     this.employeesQuery.filtersChange$.subscribe(filters => {
       this.filters = filters
-      console.log(filters);
+      console.log(this.filters);
     })
   //   console.log('1')
   //   this.employeesQuery.getLoading().subscribe(res => this.loading = res)
@@ -97,5 +97,21 @@ export class EmployeeViewComponent implements OnInit {
     //   console.log(newEmployee)
     //   this.rs.updateEmployee(result.id, newEmployee)
     // })
+  }
+
+  shouldHighlight(employeeElement: any, colName: string) {
+    if(this.filters[colName] !== undefined && this.filters[colName] !== '' ){
+      return this.filters[colName].toLowerCase() === employeeElement[colName].toLowerCase();
+    }
+    return false
+    // if(this.filters.department!=='' && this.filters.department===employeeElement['department'])
+    //   return true;
+    // if(this.filters.city!=='' && this.filters.city===employeeElement['city'])
+    //   return true;
+    // if(this.filters.firstName!=='' && this.filters.firstName===employeeElement['firstName'])
+    //   return true;
+    // if(this.filters.lastName!=='' && this.filters.lastName===employeeElement['lastName'])
+    //   return true;
+    // return false;
   }
 }

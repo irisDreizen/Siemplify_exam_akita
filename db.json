@@ -20,8 +20,8 @@
     },
     {
       "id": "3",
-      "firstName": "Chen",
-      "lastName": "Avraham",
+      "firstName": "Ben",
+      "lastName": "Levin",
       "age": "26",
       "city": "Beer Sheva",
       "street": "Kadesh",
@@ -29,8 +29,44 @@
     },
     {
       "id": "4",
-      "firstName": "Chen",
-      "lastName": "Avraham",
+      "firstName": "Gal",
+      "lastName": "Tadir",
+      "age": "26",
+      "city": "Yokneam",
+      "street": "Kadesh",
+      "department": "R&D"
+    },
+    {
+      "id": "5",
+      "firstName": "Gal",
+      "lastName": "Tadir",
+      "age": "26",
+      "city": "Beer Sheva",
+      "street": "Kadesh",
+      "department": "R&D"
+    },
+    {
+      "id": "6",
+      "firstName": "Gal",
+      "lastName": "Tadir",
+      "age": "26",
+      "city": "Beer Sheva",
+      "street": "Kadesh",
+      "department": "R&D"
+    },
+    {
+      "id": "7",
+      "firstName": "Gal",
+      "lastName": "Tadir",
+      "age": "26",
+      "city": "Beer Sheva",
+      "street": "Kadesh",
+      "department": "R&D"
+    },
+    {
+      "id": "8",
+      "firstName": "Gal",
+      "lastName": "Tadir",
       "age": "26",
       "city": "Beer Sheva",
       "street": "Kadesh",

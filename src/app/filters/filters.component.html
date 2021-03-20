@@ -1,9 +1,5 @@
 <form [formGroup]="filters">
-
-  <button style="margin-bottom: 15px;" (click)="reset()">Reset</button>
-  <!-- {{filters.value | json}} -->
-
-  <br>
+  <h2>Filters:</h2>
   First Name:
   <input type="text" formControlName="firstName">
   Last Name:
@@ -30,6 +26,9 @@
       *ngFor="let city of citiesNames$ | async"
       value="{{city}}">{{city}}</option>
   </select>
+  <br>
+  <button class="button" (click)="reset()">Reset</button>
+  <!-- {{filters.value | json}} -->
 
 
 </form>

@@ -18,12 +18,14 @@ import {MatInputModule} from "@angular/material/input";
 import { FiltersComponent } from './filters/filters.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
     EmployeeViewComponent,
     EditEmployeeComponent,
-    FiltersComponent
+    FiltersComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -37,6 +39,7 @@ import { FiltersComponent } from './filters/filters.component';
     BrowserAnimationsModule,
     MatButtonModule,
     MatInputModule,
+
 
 
   ],

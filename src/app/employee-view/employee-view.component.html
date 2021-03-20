@@ -1,23 +1,24 @@
 <div class="container">
   <app-filters></app-filters>
-  <mat-spinner *ngIf="loading | async; else notLoading"></mat-spinner>
+  <mat-spinner class="customers" *ngIf="loading | async; else notLoading"></mat-spinner>
   <ng-template #notLoading>
-  <table class="table">
+  <table class="customers">
     <tr>
       <th *ngFor="let col of columns">{{col}}</th>
     </tr>
     <tr *ngFor="let employee of employees$ | async">
       <td *ngFor="let col of index">
         <div *ngIf="col!='department'; else upperCase">
-          {{employee[col]}}
+          <span [class.hightlight]="shouldHighlight(employee,col)">{{employee[col]}}</span>
         </div>
         <ng-template #upperCase>
-          {{employee[col]|uppercase}}
+          <span  [class.hightlight]="shouldHighlight(employee,col)">{{employee[col]|uppercase}}</span>
         </ng-template>
       </td>
-      <td><button (click)="editEmployee(employee)">edit</button></td>
+      <td><button class="button" (click)="editEmployee(employee)">edit</button></td>
     </tr>
   </table>
   </ng-template>
+  <br>
 </div>
 
