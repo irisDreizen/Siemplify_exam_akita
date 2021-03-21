@@ -2,7 +2,7 @@ import {ID} from "@datorama/akita";
 
 export interface Employee {
   id: ID;
-  "userID": string,
+  userID: string,
   firstName: string,
   lastName: string,
   age: string,

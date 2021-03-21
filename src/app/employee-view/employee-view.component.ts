@@ -1,14 +1,13 @@
-import {ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation, OnDestroy} from '@angular/core';
 import {RestService} from "../state/rest.service";
 import {Employee} from "../employee.model";
 import {Router} from "@angular/router";
 import {employeeQuery} from "../state/employee.query";
-import {EmployeeStore} from "../state/employee.store";
 import {filter, switchMap, take} from "rxjs/operators";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {EditEmployeeComponent} from "../edit-employee/edit-employee.component";
 import {Observable, Subscription} from "rxjs";
-import { untilDestroyed } from 'ngx-take-until-destroy';
+
 
 @Component({
   selector: 'app-employee-view',
@@ -17,101 +16,62 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EmployeeViewComponent implements OnInit {
-  loading = this.employeesQuery.selectAreEmployeesLoading$;
+export class EmployeeViewComponent implements OnInit, OnDestroy {
+  loading$ : Observable<boolean> = this.employeesQuery.selectAreEmployeesLoading$;
   employees$: Observable<Employee[]> = this.employeesQuery.selectFilteredEmployees$;
   columns = ['ID', 'first name', 'last name', 'age', "city", 'street', 'department', 'edit'];
   index = ['userID', 'firstName', 'lastName', 'age', 'city', 'street', 'department'];
+  filters: Object;
   listEmployeesSub: Subscription;
-  filters;
-  // constructor() { }
+  filtersSub: Subscription;
 
-  constructor(private dialog: MatDialog, private rs: RestService, private router: Router, private employeesQuery: employeeQuery, private employeeStore: EmployeeStore) {}
+
+  constructor(private dialog: MatDialog, private rs: RestService, private router: Router, private employeesQuery: employeeQuery) {}
 
 
 
   ngOnInit() {
+    //load list of employees for the first time
     this.listEmployeesSub = this.employeesQuery.selectAreEmployeesLoading$.pipe(
       filter(areEmployeesLoading => areEmployeesLoading),
-      switchMap(areEmployeesLoading  => {
+      switchMap(areEmployeesLoading  => { //we are using switch map here because getEmployees return an observable
         if (areEmployeesLoading ) {
           return this.rs.getEmployees();
         }
       })
     ).subscribe(result => {});
-    // this.employeesQuery.selectAreEmployeesLoading$.subscribe(res => this.loading = res)
-    this.employeesQuery.filtersChange$.subscribe(filters => {
-      this.filters = filters
-      console.log(this.filters);
+
+    //query filters from store
+    this.filtersSub = this.employeesQuery.filtersChange$.subscribe(filters => {
+      this.filters = filters;
     })
-  //   console.log('1')
-  //   this.employeesQuery.getLoading().subscribe(res => this.loading = res)
-  //   this.employeesQuery.getEmployees().subscribe(res => this.employees = res)
-  //   console.log('2')
-  //   //first we will check if employees loaded
-  //   this.employeesQuery.getLoaded().pipe(
-  //     take(1), //fetch the data from the store only once
-  //     filter(res => !res), //only if loaded is false, the switch map will be executed
-  //     switchMap(() => {
-  //       this.employeeStore.setLoading(true);
-  //       return this.rs.getEmployees();
-  // })).subscribe( res => {
-  //   this.employeeStore.update(state =>{
-  //     return {
-  //       employees: res
-  //     };
-  //     })
-  //     this.employeeStore.setLoading(false)
-  //   }, error => {
-  //     console.log(error)
-  //     this.employeeStore.setLoading(false)
-  //   });
-  //
 
   }
 
   editEmployee(employee: Employee) {
-    // this.router.navigate(['/editEmployee']);
     this.openDialog(employee)
   }
+
+  // open a dialog using edit-employee component
   openDialog(employee: Employee) {
-    //we are then creating an instance of MatDialogConfig, which will configure the dialog with a set of default behaviors
+    // creating an instance of MatDialogConfig, which will configure the dialog with a set of default behaviors
     const dialogConfig = new MatDialogConfig();
-    // user will not be able to close the dialog just by clicking outside of it
-    // dialogConfig.disableClose = true;
-    // //focus will be set automatically on the first form field of the dialog
-    // dialogConfig.autoFocus = true;
-    dialogConfig.data = employee;
-    let dialogRef = this.dialog.open(EditEmployeeComponent, dialogConfig);
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log(result)
-    //   let newEmployee = {
-    //     firstName: result.firstName,
-    //     lastName: result.lastName,
-    //     age: result.age,
-    //     city: result.city,
-    //     street: result.street,
-    //     department: result.department
-    //   }
-    //   console.log("newEmployee from view")
-    //   console.log(newEmployee)
-    //   this.rs.updateEmployee(result.id, newEmployee)
-    // })
+    dialogConfig.data = {id: employee.id};
+    this.dialog.open(EditEmployeeComponent, dialogConfig);
   }
 
+  // check is the text in view equal to filter text
   shouldHighlight(employeeElement: any, colName: string) {
+    // check if the filters are not empty
     if(this.filters[colName] !== undefined && this.filters[colName] !== '' ){
       return this.filters[colName].toLowerCase() === employeeElement[colName].toLowerCase();
     }
     return false
-    // if(this.filters.department!=='' && this.filters.department===employeeElement['department'])
-    //   return true;
-    // if(this.filters.city!=='' && this.filters.city===employeeElement['city'])
-    //   return true;
-    // if(this.filters.firstName!=='' && this.filters.firstName===employeeElement['firstName'])
-    //   return true;
-    // if(this.filters.lastName!=='' && this.filters.lastName===employeeElement['lastName'])
-    //   return true;
-    // return false;
+  }
+
+  // unsubscribe when leaving the component
+  ngOnDestroy(): void {
+    this.listEmployeesSub.unsubscribe();
+    this.filtersSub.unsubscribe();
   }
 }

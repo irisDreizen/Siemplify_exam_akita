@@ -19,32 +19,27 @@ export class RestService {
     this.store=store;
   }
 
+  //Getting list of employees by get request and setting this list to store
   getEmployees(): Observable<Employee[]>{
-    this.store.setLoading(true)
-    // this.store.update({areEmployeesLoaded: false});
     return  this.http.get<Employee[]>(this.url).pipe(delay(2000),
       tap(employees => {
-        this.store.loadEmployees(employees, true)
-        // this.store.setLoading(false)
+        this.store.loadEmployees(employees)
       })
     );
-
   }
 
-  updateEmployee(id: string, employee: any): Observable<Employee>{ //we paa new employee without id property
-    this.store.setLoading(true)
-    // this.store.update({areEmployeesLoaded: false});
+ //Updating specific employee details in store
+  updateEmployee(id: string, employee: any): Observable<Employee>{
+    this.store.setLoading(true); //setting the store to loading mode since we updating the list. it will back to false automatically after updating the store.
     return this.http.put<Employee>(this.url+'/'+id, employee).pipe(delay(2000),
       tap(result => {
-        this.store.updateEmployee(id, employee, true)
+        this.store.updateEmployee(id, employee)
       })
     )
   }
 
+  //Updating the store with the new filters changed in user interface
   updateFilter(city: string, department: string, firstName: string, lastName: string ) {
-    console.log("updating filter in store");
-    console.log(city, department, firstName, lastName)
-    console.log("lalala")
     this.store.update({
       ui: {
         filters:{

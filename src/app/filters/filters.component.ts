@@ -1,7 +1,7 @@
-import {ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation, OnDestroy} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {employeeQuery} from "../state/employee.query";
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {RestService} from "../state/rest.service";
 
 @Component({
@@ -11,11 +11,11 @@ import {RestService} from "../state/rest.service";
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FiltersComponent implements OnInit {
+export class FiltersComponent implements OnInit, OnDestroy {
   filters: FormGroup;
   departmentNames$: Observable<string[]> = this.employeesQuery.updatedDepartments$;
   citiesNames$: Observable<string []>  = this.employeesQuery.updatedCities$;
-
+  filterChangingSubscription: Subscription;
 
   constructor(private employeesQuery: employeeQuery, private rs: RestService) { }
 
@@ -27,12 +27,10 @@ export class FiltersComponent implements OnInit {
       lastName: new FormControl("")
     });
 
-    this.filters.valueChanges.subscribe(res => {
+    this.filterChangingSubscription = this.filters.valueChanges.subscribe(res => {
       this.rs.updateFilter(this.filters.value.city, this.filters.value.department, this.filters.value.firstName, this.filters.value.lastName)
     })
   }
-
-
 
   reset() {
     // reset the current state to the initial value
@@ -43,6 +41,12 @@ export class FiltersComponent implements OnInit {
       lastName:''
     })
   }
+
+  //Destroying subscription when leaving the component
+  ngOnDestroy(): void {
+    this.filterChangingSubscription.unsubscribe()
+  }
+
 
 
 

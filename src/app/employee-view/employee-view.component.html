@@ -1,5 +1,5 @@
 <app-filters></app-filters>
-  <mat-spinner class="employeesInfo" *ngIf="loading | async; else notLoading"></mat-spinner>
+  <mat-spinner class="employeesInfo" *ngIf="loading$ | async; else notLoading"></mat-spinner>
   <ng-template #notLoading>
   <table class="employeesInfo">
     <tr>
@@ -11,7 +11,7 @@
           <span [class.employeesInfo__hightlight]="shouldHighlight(employee,col)">{{employee[col]}}</span>
         </div>
         <ng-template #upperCase>
-          <span  [class.hightlight]="shouldHighlight(employee,col)">{{employee[col]|uppercase}}</span>
+          <span  [class.employeesInfo__hightlight]="shouldHighlight(employee,col)">{{employee[col]|uppercase}}</span>
         </ng-template>
       </td>
       <td><button class="button" (click)="editEmployee(employee)">edit</button></td>

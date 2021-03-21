@@ -1,8 +1,10 @@
-import {ChangeDetectionStrategy, Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {RestService} from "../state/rest.service";
 import {employeeQuery} from "../state/employee.query";
+import {Employee} from "../employee.model";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-edit-employee',
@@ -11,53 +13,54 @@ import {employeeQuery} from "../state/employee.query";
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EditEmployeeComponent implements OnInit {
+export class EditEmployeeComponent implements OnInit, OnDestroy {
   form: FormGroup;
   IDs:string[];
+  prevEmployeeInfo: Employee;
+  IDsub: Subscription;
+  prevEmployeeInfoSub: Subscription;
 
   constructor(private rs: RestService, public dialogRef: MatDialogRef<EditEmployeeComponent>,@Inject(MAT_DIALOG_DATA) public data: any, private employeesQuery: employeeQuery) { }
 
   ngOnInit(): void {
-    this.employeesQuery.updatedIIDs$.subscribe(res => {this.IDs = res})
+    this.IDsub = this.employeesQuery.updatedIIDs$.subscribe(res => {this.IDs = res})
+    this.prevEmployeeInfoSub = this.employeesQuery.selectEntity(this.data.id).subscribe(res => {this.prevEmployeeInfo={...res}});
     this.form = new FormGroup({
-      'userID': new FormControl(this.data.userID,[Validators.required, this.isValidID.bind(this) ]),
-      'firstName': new FormControl(this.data.firstName, [Validators.required]),
-      'lastName': new FormControl(this.data.lastName, Validators.required),
-      'age': new FormControl(this.data.age, Validators.required),
-      'city': new FormControl(this.data.city, Validators.required),
-      'street': new FormControl( this.data.street, Validators.required) ,
-      'department': new FormControl(this.data.department, Validators.required) });
-
-
-
-
-
+      'userID': new FormControl(this.prevEmployeeInfo.userID,[Validators.required, this.isValidID.bind(this) ]),
+      'firstName': new FormControl(this.prevEmployeeInfo.firstName, [Validators.required]),
+      'lastName': new FormControl(this.prevEmployeeInfo.lastName, Validators.required),
+      'age': new FormControl(this.prevEmployeeInfo.age, Validators.required),
+      'city': new FormControl(this.prevEmployeeInfo.city, Validators.required),
+      'street': new FormControl( this.prevEmployeeInfo.street, Validators.required) ,
+      'department': new FormControl(this.prevEmployeeInfo.department, Validators.required) });
   }
 
+  // updating employee information after submission
   onSubmit(){
-    //actions
-    this.rs.updateEmployee(this.data.id, this.form.value).subscribe(result => console.log(result))
+    this.rs.updateEmployee(this.prevEmployeeInfo.id.toString(), this.form.value);
     this.onClose()
   }
 
+  // closing dialog
   onClose(){
     this.dialogRef.close()
   }
 
+  // check ID validation
   isValidID(control: FormControl): { [s: string]: boolean } {
-    if (this.IDs.indexOf(control.value) !== -1 && this.data.userID=== control.value) { // if the ID not exist in ID's list
-      console.log("i'm the same id")
+    //if ID exist in the list, but it's the original ID of the employee
+    if (this.IDs.indexOf(control.value) !== -1 && this.prevEmployeeInfo.userID=== control.value) {
       return null;
     }
+    // if the ID not exist in ID's list
     if(this.IDs.indexOf(control.value) === -1){
-      console.log("i'm am a new id")
       return null;
     } else {
-      console.log('i return a validation error')
       return {'idIsUsed': true};
     }
   }
 
+  // choosing which error to show by the error type detected
   chooseErrorForID() {
     if (this.form.controls['userID'].hasError('idIsUsed')){
       return 'This ID is already in use';
@@ -67,5 +70,11 @@ export class EditEmployeeComponent implements OnInit {
     } else{
       return ''
     }
+  }
+
+  // unsubscribe when leaving the component
+  ngOnDestroy(): void {
+    this.prevEmployeeInfoSub.unsubscribe();
+    this.IDsub.unsubscribe();
   }
 }
