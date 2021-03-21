@@ -26,13 +26,13 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
     this.IDsub = this.employeesQuery.updatedIIDs$.subscribe(res => {this.IDs = res})
     this.prevEmployeeInfoSub = this.employeesQuery.selectEntity(this.data.id).subscribe(res => {this.prevEmployeeInfo={...res}});
     this.form = new FormGroup({
-      'userID': new FormControl(this.prevEmployeeInfo.userID,[Validators.required, this.isValidID.bind(this) ]),
-      'firstName': new FormControl(this.prevEmployeeInfo.firstName, [Validators.required]),
-      'lastName': new FormControl(this.prevEmployeeInfo.lastName, Validators.required),
-      'age': new FormControl(this.prevEmployeeInfo.age, Validators.required),
-      'city': new FormControl(this.prevEmployeeInfo.city, Validators.required),
-      'street': new FormControl( this.prevEmployeeInfo.street, Validators.required) ,
-      'department': new FormControl(this.prevEmployeeInfo.department, Validators.required) });
+      'userID': new FormControl(this.prevEmployeeInfo.userID,[Validators.required, this.isValidID.bind(this), Validators.pattern("^\\d{9}$") ]),
+      'firstName': new FormControl(this.prevEmployeeInfo.firstName, [Validators.required, Validators.pattern("^[a-zA-Z\\s]*$")]),
+      'lastName': new FormControl(this.prevEmployeeInfo.lastName, [Validators.required, Validators.pattern("^[a-zA-Z\\s]*$")]),
+      'age': new FormControl(this.prevEmployeeInfo.age, [Validators.required, Validators.pattern("^[0-9]*$")]),
+      'city': new FormControl(this.prevEmployeeInfo.city, [Validators.required, Validators.pattern("^[a-zA-Z\\s]*$")]),
+      'street': new FormControl( this.prevEmployeeInfo.street, [Validators.required, Validators.pattern("^[a-zA-Z\\s]*$")]) ,
+      'department': new FormControl(this.prevEmployeeInfo.department, [Validators.required])});
   }
 
   // updating employee information after submission
@@ -67,7 +67,11 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
     }
     if (this.form.controls['userID'].hasError('required')){
       return 'This filed is required';
-    } else{
+    }
+    if(this.form.controls['userID'].hasError("pattern")) {
+      return 'You must enter 9 digits';
+    }else
+    {
       return ''
     }
   }

@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Employee} from "../employee.model";
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {delay, tap} from "rxjs/operators";
 import {EmployeeStore} from "./employee.store";
 
@@ -9,10 +9,11 @@ import {EmployeeStore} from "./employee.store";
 @Injectable({
   providedIn: 'root'
 })
-export class RestService {
+export class RestService implements OnDestroy{
    url: string ="http://localhost:3000/Employees";
    store: EmployeeStore;
    http: HttpClient;
+  private updateSub: Subscription;
 
   constructor(http: HttpClient, store: EmployeeStore) {
     this.http=http;
@@ -29,13 +30,25 @@ export class RestService {
   }
 
  //Updating specific employee details in store
-  updateEmployee(id: string, employee: any): Observable<Employee>{
+  updateEmployee(id: string, employee: any){
     this.store.setLoading(true); //setting the store to loading mode since we updating the list. it will back to false automatically after updating the store.
-    return this.http.put<Employee>(this.url+'/'+id, employee).pipe(delay(2000),
+    this.updateSub = this.http.put<Employee>(this.url+'/'+id, employee).pipe(delay(2000),
       tap(result => {
         this.store.updateEmployee(id, employee)
+
+        this.store.update({
+          ui: {
+            filters:{
+              city: undefined,
+              department: undefined,
+              firstName: undefined,
+              lastName: undefined
+            }
+          }
+        });
+
       })
-    )
+    ).subscribe(res => {})
   }
 
   //Updating the store with the new filters changed in user interface
@@ -50,6 +63,10 @@ export class RestService {
         }
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.updateSub.unsubscribe();
   }
 
 }

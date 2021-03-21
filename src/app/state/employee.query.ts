@@ -30,10 +30,14 @@ export class employeeQuery extends QueryEntity<EmployeeState>{
   //This function receives all filters from filtersChange$ and employees from selectAll() function
   //it filter employees array and returns it to selectFilteredEmployees$
   private getFilteredEmployees(filter, employees): Employee[] {
-    let firstFilter = filter.city!='' ? employees.filter(t => (t.city).toLowerCase() == (filter.city).toLowerCase()) : employees;
-    let secondFilter = filter.department!='' ? firstFilter.filter(t => (t.department).toLowerCase() == (filter.department).toLowerCase()): firstFilter;
-    let thirdFilter = filter.firstName !='' ? secondFilter.filter(t => (t.firstName).toLowerCase() == (filter.firstName).toLowerCase()) : secondFilter;
-    let fourthFilter = filter.lastName !='' ? thirdFilter.filter(t => (t.lastName).toLowerCase() == (filter.lastName).toLowerCase()) : thirdFilter;
+    let firstFilter = filter.city!='' && filter.city!=undefined? employees.filter(t =>
+      (t.city).toLowerCase() == (filter.city).toLowerCase()) : employees;
+    let secondFilter = filter.department!='' && filter.department!=undefined ? firstFilter.filter(t =>
+      (t.department).toLowerCase() == (filter.department).toLowerCase()): firstFilter;
+    let thirdFilter = filter.firstName !='' && filter.firstName !=undefined ? secondFilter.filter(t =>
+      (t.firstName).toLowerCase() == (filter.firstName).toLowerCase()) : secondFilter;
+    let fourthFilter = filter.lastName !='' && filter.lastName !=undefined ? thirdFilter.filter(t =>
+      (t.lastName).toLowerCase() == (filter.lastName).toLowerCase()) : thirdFilter;
 
       return fourthFilter;
     }

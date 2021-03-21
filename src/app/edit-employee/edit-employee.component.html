@@ -16,7 +16,7 @@
       <label>First Name</label>
       <input matInput type="text" class="form-control" id="firstName"  name="firstName" formControlName="firstName">
       </mat-form-field>
-    <span class="help-block" *ngIf="!form.controls['firstName'].valid && form.controls['firstName'].touched">You must enter a name</span>
+    <span class="help-block" *ngIf="!form.controls['firstName'].valid && form.controls['firstName'].touched">You must enter a valid  name(letters only)</span>
     <br>
 
     <mat-form-field>
@@ -24,7 +24,7 @@
       <input matInput type="text" class="form-control" id="lastName"  name="lastName" formControlName="lastName">
       </mat-form-field>
     <br>
-    <span class="help-block" *ngIf="!form.controls['lastName'].valid && form.controls['lastName'].touched">You must enter a name</span>
+    <span class="help-block" *ngIf="!form.controls['lastName'].valid && form.controls['lastName'].touched">You must enter a valid name(letters only)</span>
 
     <br>
      <mat-form-field>
@@ -40,7 +40,7 @@
       <input matInput type="text" class="form-control" id="city" name="city" formControlName="city">
       </mat-form-field>
     <br>
-    <span class="help-block" *ngIf="!form.controls['city'].valid && form.controls['city'].touched">You must enter city name</span>
+    <span class="help-block" *ngIf="!form.controls['city'].valid && form.controls['city'].touched">You must enter a valid city name(letters only)</span>
 
     <br>
     <mat-form-field>
@@ -48,7 +48,7 @@
       <input matInput type="text" class="form-control" id="street"  name="street" formControlName="street">
     </mat-form-field>
     <br>
-    <span class="help-block" *ngIf="!form.controls['street'].valid && form.controls['street'].touched">You must enter street name</span>
+    <span class="help-block" *ngIf="!form.controls['street'].valid && form.controls['street'].touched">You must enter a valid street name(letters only)</span>
     <br>
 
     <mat-form-field>
@@ -56,7 +56,7 @@
       <input matInput type="text" class="form-control" id="departmet" name="department" formControlName="department">
       </mat-form-field>
     <br>
-    <span class="help-block" *ngIf="!form.controls['department'].valid && form.controls['department'].touched">You must enter department name</span>
+    <span class="help-block" *ngIf="!form.controls['department'].valid && form.controls['department'].touched">You must enter a valid department name</span>
     <br>
   </mat-dialog-content>
 
