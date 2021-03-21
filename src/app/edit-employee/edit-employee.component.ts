@@ -31,9 +31,12 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
       'lastName': new FormControl(this.prevEmployeeInfo.lastName, [Validators.required, Validators.pattern("^[a-zA-Z\\s]*$")]),
       'age': new FormControl(this.prevEmployeeInfo.age, [Validators.required, Validators.pattern("^[0-9]*$")]),
       'city': new FormControl(this.prevEmployeeInfo.city, [Validators.required, Validators.pattern("^[a-zA-Z\\s]*$")]),
-      'street': new FormControl( this.prevEmployeeInfo.street, [Validators.required, Validators.pattern("^[a-zA-Z\\s]*$")]) ,
+      'street': new FormControl( this.prevEmployeeInfo.street, [Validators.required, Validators.pattern("^[a-zA-Z0-9_.-\\s]*$")]) ,
       'department': new FormControl(this.prevEmployeeInfo.department, [Validators.required])});
+
+
   }
+
 
   // updating employee information after submission
   onSubmit(){

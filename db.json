@@ -15,7 +15,7 @@
       "firstName": "Chen",
       "lastName": "Avraham",
       "age": "26",
-      "city": "Nes Tziona",
+      "city": "Beer Sheva",
       "street": "Kadesh",
       "department": "R&D",
       "id": "2"
@@ -25,7 +25,7 @@
       "firstName": "Ben",
       "lastName": "Levin",
       "age": "27",
-      "city": "BeerSheva",
+      "city": "Ramat Gan",
       "street": "Ramot",
       "department": "Finance",
       "id": "3"
@@ -41,34 +41,34 @@
       "id": "4"
     },
     {
-      "id": "5",
       "userID": "686678678",
       "firstName": "Eli",
       "lastName": "Zatlawy",
       "age": "26",
       "city": "Beer Sheva",
       "street": "Alexander Yanai",
-      "department": "R&D"
+      "department": "R&D",
+      "id": "5"
     },
     {
-      "id": "6",
-      "userID": "6865324567",
+      "userID": "686532456",
       "firstName": "Iris",
-      "lastName": "Dreizenstok",
+      "lastName": "Dreizenshtok",
       "age": "25",
       "city": "Beer Sheva",
       "street": "Alexander Yanai",
-      "department": "R&D"
+      "department": "R&D",
+      "id": "6"
     },
     {
-      "id": "7",
       "userID": "686598765",
       "firstName": "Israel",
       "lastName": "Israeli",
       "age": "60",
       "city": "Tel Aviv",
       "street": "Even Gvirol",
-      "department": "Product"
+      "department": "Product",
+      "id": "7"
     },
     {
       "userID": "123123124",
@@ -79,6 +79,26 @@
       "street": "Even Gvirol",
       "department": "Product",
       "id": "8"
+    },
+    {
+      "userID": "123123555",
+      "firstName": "Israel",
+      "lastName": "Cohen",
+      "age": "54",
+      "city": "Tel Aviv",
+      "street": "Alenbi",
+      "department": "Product",
+      "id": "9"
+    },
+    {
+      "userID": "123511522",
+      "firstName": "Neta",
+      "lastName": "Cohen",
+      "age": "20",
+      "city": "Yokneam",
+      "street": "Alenbi",
+      "department": "Finance",
+      "id": "10"
     }
   ]
 }
