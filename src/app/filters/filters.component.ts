@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation, OnDestroy
 import {FormControl, FormGroup} from "@angular/forms";
 import {employeeQuery} from "../state/employee.query";
 import {Observable, Subscription} from "rxjs";
-import {RestService} from "../state/rest.service";
+import {EmployeeService} from "../state/employee.service";
 
 @Component({
   selector: 'app-filters',
@@ -18,7 +18,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
   filterChangingSubscription: Subscription;
   queryFilterChanging: Subscription;
 
-  constructor(private employeesQuery: employeeQuery, private rs: RestService) { }
+  constructor(private employeesQuery: employeeQuery, private rs: EmployeeService) { }
 
   ngOnInit(): void {
     this.filters = new FormGroup({

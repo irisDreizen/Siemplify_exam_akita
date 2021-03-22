@@ -15,7 +15,7 @@ export class employeeQuery extends QueryEntity<EmployeeState>{
 
  //Observe filter changes in store
   filtersChange$ = this.select(state => state.ui.filters);
-
+  selectIsFirstTimeLoading = this.select(state => state.isFirstTime)
   //Observe is the store loading
   selectAreEmployeesLoading$ = this.selectLoading();
 

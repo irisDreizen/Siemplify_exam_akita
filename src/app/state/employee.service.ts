@@ -9,7 +9,7 @@ import {EmployeeStore} from "./employee.store";
 @Injectable({
   providedIn: 'root'
 })
-export class RestService implements OnDestroy{
+export class EmployeeService implements OnDestroy{
    url: string ="http://localhost:3000/Employees";
    store: EmployeeStore;
    http: HttpClient;
@@ -24,7 +24,7 @@ export class RestService implements OnDestroy{
   getEmployees(): Observable<Employee[]>{
     return  this.http.get<Employee[]>(this.url).pipe(delay(2000),
       tap(employees => {
-        this.store.loadEmployees(employees)
+        this.store.loadEmployees(employees, false)
       })
     );
   }
@@ -35,7 +35,6 @@ export class RestService implements OnDestroy{
     this.updateSub = this.http.put<Employee>(this.url+'/'+id, employee).pipe(delay(2000),
       tap(result => {
         this.store.updateEmployee(id, employee)
-
         this.store.update({
           ui: {
             filters:{
@@ -47,7 +46,7 @@ export class RestService implements OnDestroy{
           }
         });
 
-      })
+      }),
     ).subscribe(res => {})
   }
 

@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation, OnDestroy} from '@angular/core';
-import {RestService} from "../state/rest.service";
+import {EmployeeService} from "../state/employee.service";
 import {Employee} from "../employee.model";
 import {Router} from "@angular/router";
 import {employeeQuery} from "../state/employee.query";
@@ -17,29 +17,32 @@ import {Observable, Subscription} from "rxjs";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EmployeeViewComponent implements OnInit, OnDestroy {
-  loading$ : Observable<boolean> = this.employeesQuery.selectAreEmployeesLoading$;
-  employees$: Observable<Employee[]> = this.employeesQuery.selectFilteredEmployees$;
+  loading$ :Observable<boolean>;
+  employees$ : Observable<Employee[]>;
   columns = ['ID', 'first name', 'last name', 'age', "city", 'street', 'department', 'edit'];
   index = ['userID', 'firstName', 'lastName', 'age', 'city', 'street', 'department'];
   filters: Object;
   listEmployeesSub: Subscription;
   filtersSub: Subscription;
 
-
-  constructor(private dialog: MatDialog, private rs: RestService, private router: Router, private employeesQuery: employeeQuery) {}
+  constructor(private dialog: MatDialog, private rs: EmployeeService, private router: Router, private employeesQuery: employeeQuery) {}
 
 
 
   ngOnInit() {
+    // query is the data loading (is the data updating)
+    this.loading$ = this.employeesQuery.selectAreEmployeesLoading$;
+
     //load list of employees for the first time
-    this.listEmployeesSub = this.employeesQuery.selectAreEmployeesLoading$.pipe(
-      filter(areEmployeesLoading => areEmployeesLoading),
-      switchMap(areEmployeesLoading  => { //we are using switch map here because getEmployees return an observable
-        if (areEmployeesLoading ) {
+    this.listEmployeesSub = this.employeesQuery.selectIsFirstTimeLoading.pipe(
+      filter(isItFirstLoading => isItFirstLoading),
+      switchMap(isItFirstLoading  => { //we are using switch map here because getEmployees return an observable
           return this.rs.getEmployees();
-        }
       })
     ).subscribe(result => {});
+
+    // query updated and filtered (if needed) data
+    this.employees$ =this.employeesQuery.selectFilteredEmployees$;
 
     //query filters from store
     this.filtersSub = this.employeesQuery.filtersChange$.subscribe(filters => {

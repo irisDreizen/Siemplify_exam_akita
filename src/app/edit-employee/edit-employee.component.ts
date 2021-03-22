@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {RestService} from "../state/rest.service";
+import {EmployeeService} from "../state/employee.service";
 import {employeeQuery} from "../state/employee.query";
 import {Employee} from "../employee.model";
 import {Subscription} from "rxjs";
@@ -20,7 +20,7 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
   IDsub: Subscription;
   prevEmployeeInfoSub: Subscription;
 
-  constructor(private rs: RestService, public dialogRef: MatDialogRef<EditEmployeeComponent>,@Inject(MAT_DIALOG_DATA) public data: any, private employeesQuery: employeeQuery) { }
+  constructor(private rs: EmployeeService, public dialogRef: MatDialogRef<EditEmployeeComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private employeesQuery: employeeQuery) { }
 
   ngOnInit(): void {
     this.IDsub = this.employeesQuery.updatedIIDs$.subscribe(res => {this.IDs = res})
