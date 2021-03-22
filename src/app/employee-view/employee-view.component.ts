@@ -59,6 +59,9 @@ export class EmployeeViewComponent implements OnInit, OnDestroy {
   openDialog(employee: Employee) {
     // creating an instance of MatDialogConfig, which will configure the dialog with a set of default behaviors
     const dialogConfig = new MatDialogConfig();
+    //the user will not be able to close the dialog just by clicking outside of it
+    dialogConfig.disableClose=true;
+    //passing data to dialog
     dialogConfig.data = {id: employee.id};
     this.dialog.open(EditEmployeeComponent, dialogConfig);
   }
